@@ -7,7 +7,7 @@ df = pd.read_csv("grouped_cars.csv")
 # =df['Color'].unique()
 # print(unique_cols)
 
-X = 1000
+X = 3000
 count_col = df['Color'].value_counts()
 common_col = count_col[count_col >= X].index
 df = df[df['Color'].isin(common_col)]
@@ -15,18 +15,9 @@ df = df[df['Color'].isin(common_col)]
 color_effects = []
 
 for model_id, subdf in df.groupby('Genmodel_ID'):
-    # ONGELMIA tässä
-    for idx, row in subdf.iterrows():
-        mask = (
-            (subdf['Reg_year'].between(row['Reg_year']-1, row['Reg_year']+1)) &
-            (subdf['Adv_year'].between(row['Adv_year']-1, row['Adv_year']+1))
-        )
-        group = subdf[mask]
-        if len(group) < 10:  
-            continue
-
-        group_mean = group['Price'].mean()
-        color_price_diff = group.groupby('Color')['Price'].mean() - group_mean
+    if len(subdf) > 100:
+        group_mean = subdf['Price'].mean()
+        color_price_diff = subdf.groupby('Color')['Price'].mean() - group_mean
         color_effects.append(color_price_diff)
 
 
