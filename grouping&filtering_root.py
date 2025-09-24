@@ -14,24 +14,39 @@ df['Runned_Miles'] = pd.to_numeric(df['Runned_Miles'], errors='coerce')
 df = df.dropna(subset=['Price', 'Reg_year', 'Adv_year', 'Maker', 'Genmodel', 'Color', "Runned_Miles"])
 
 
+# TÄYTYY LISÄTÄ INFLAATIO KORJAUS. MAHDOLLISESTI MYÖS YLEINEN MARKKINOIDEN KEHITYS(?)
+
+
+
+
+# Pois superautot, 
+df = df[df['Price']<=50000]
+df = df[df["Runned_Miles"]*1.60934<=300000]
+
 def year_bucket(year):
-    return (year // 3) * 3  # groups into 3-year bins, e.g. 2016-2018, 2019-2021
+    return (year // 3) * 3  
 
 df['Adv_year_bucket'] = df['Adv_year'].apply(year_bucket)
 df['Reg_year_bucket'] = df['Reg_year'].apply(year_bucket)
 
-# Pois superautot yms.
-df = df[df['Price']<=50000]
 
+
+# Moottorikoko numeroksi
+df['Engin_size'] = df['Engin_size'].str.replace('L', '', regex=False).astype(float)
 
 # Kilometreiksi ja pyöristys (44554km // 10000=4...)
 df['km'] = (df['Runned_Miles']*1.60934 // 10000) * 10000
+
+# Ikä erikseen
+df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
+
+
 
 # Ryhmittely ominaisuuksien mukaan (vuosi on todella tiukka ehto)
 grouped = df.groupby(['Genmodel_ID', 'Adv_year_bucket', 'Reg_year_bucket', 'km'])
 
 # 
-filtered = grouped.filter(lambda x: len(x) >= 30).drop(labels=['Adv_ID',
+filtered = grouped.filter(lambda x: len(x) >= 50).drop(labels=['Adv_ID',
                                                                'Adv_month',
                                                                'Seat_num',
                                                                 'Door_num',
@@ -40,6 +55,5 @@ filtered = grouped.filter(lambda x: len(x) >= 30).drop(labels=['Adv_ID',
 
 #accepted_models = ["34_2"]
 #filtered = filtered[filtered['Genmodel_ID'].isin(accepted_models)]
-print(filtered)
-filtered.to_csv("grouped_cars.csv", index=False)
 
+filtered.to_csv("grouped_cars.csv", index=False)
