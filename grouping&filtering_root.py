@@ -13,10 +13,43 @@ df['Runned_Miles'] = pd.to_numeric(df['Runned_Miles'], errors='coerce')
 # Tyhjät pois (pitää testata lisää jos kiinnostaa)
 df = df.dropna(subset=['Price', 'Reg_year', 'Adv_year', 'Maker', 'Genmodel', 'Color', "Runned_Miles"])
 
+inflation_index = {
+    2025: 1,
+    2024: 1.0253,
+    2023: 1.100177659,
+    2022: 1.199930767,
+    2021: 1.230984976,
+    2020: 1.241460658,
+    2019: 1.263695218,
+    2018: 1.295009586,
+    2017: 1.329754693,
+    2016: 1.338531074,
+    2015: 1.339066486,
+    2014: 1.358630248,
+    2013: 1.393479113,
+    2012: 1.432886703,
+    2011: 1.496850765,
+    2010: 1.546216903,
+    2009: 1.579692499,
+    2008: 1.636593023,
+    2007: 1.674611079,
+    2006: 1.713612771,
+    2005: 1.748861786,
+    2004: 1.772366488
+}
 
+df['Inflation_index'] = df['Adv_year'].map(inflation_index)
+
+'''
 # TÄYTYY LISÄTÄ INFLAATIO KORJAUS. MAHDOLLISESTI MYÖS YLEINEN MARKKINOIDEN KEHITYS(?)
+def adjust_for_inflation(row):
+    year = row["Adv_year"]
+    price = row["Price"]
+    return round(price * inflation_index[year])
 
-
+# Create new column
+df["Price_inflation_adj"] = df.apply(adjust_for_inflation, axis=1)
+'''
 
 
 # Pois superautot, 
