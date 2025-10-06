@@ -9,14 +9,15 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 df = pd.read_csv("grouped_cars.csv")
+#df2 = pd.read_csv("")
 
 df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
-categorical_features = ['Maker', 'Genmodel', 'Fuel_type']
-numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Inflation_index']
+categorical_features = ['Maker','Gearbox', 'Fuel_type', 'Bodytype']
+numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Price_fixed']
 
 X = df[categorical_features + numerical_features]
-y = df['Price']
+y = df['Price_fixed']
 
 # Ei hyvä strategia välttämättä. Väliaikainen
 numeric_transformer = SimpleImputer(strategy='mean')  
@@ -57,3 +58,8 @@ mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
 print(f"Mean Squared Error: {mse}")
 print(f"Root Mean Squared Error: {rmse}")
+
+#%%
+from sklearn.metrics import r2_score
+r2 = r2_score(X, y)
+# %%
