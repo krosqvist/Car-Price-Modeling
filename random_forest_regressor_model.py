@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -9,15 +10,15 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 df = pd.read_csv("grouped_cars.csv")
-#df2 = pd.read_csv("")
+
 
 df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
-categorical_features = ['Maker','Gearbox', 'Fuel_type', 'Bodytype']
-numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Price_fixed']
+categorical_features = ['Maker', 'Genmodel_ID','Gearbox', 'Fuel_type', 'Bodytype']
+numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Entry_price', 'Inflation_index']
 
 X = df[categorical_features + numerical_features]
-y = df['Price_fixed']
+y = df['Price']
 
 # Ei hyvä strategia välttämättä. Väliaikainen
 numeric_transformer = SimpleImputer(strategy='mean')  
@@ -58,8 +59,3 @@ mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
 print(f"Mean Squared Error: {mse}")
 print(f"Root Mean Squared Error: {rmse}")
-
-#%%
-from sklearn.metrics import r2_score
-r2 = r2_score(X, y)
-# %%

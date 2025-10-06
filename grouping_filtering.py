@@ -40,7 +40,7 @@ inflation_index={
 
 
 df['Inflation_index'] = df['Adv_year'].map(inflation_index)
-df['Price_fixed'] = df['Price']*df['Inflation_index']
+
 
 '''
 # TÄYTYY LISÄTÄ INFLAATIO KORJAUS. MAHDOLLISESTI MYÖS YLEINEN MARKKINOIDEN KEHITYS(?)
@@ -77,11 +77,22 @@ df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
 
 
+# Add original price to table
+price_table = pd.read_csv('Price_table.csv')
+price_data = price_table[['Genmodel_ID', 'Year', 'Entry_price']]
+df = df.merge(price_data,
+               left_on=['Genmodel_ID', 'Reg_year'],
+                  right_on=['Genmodel_ID', 'Year'],
+                  how='left')
+
+
+
+
 # Ryhmittely ominaisuuksien mukaan (vuosi on todella tiukka ehto)
 grouped = df.groupby(['Genmodel_ID', 'Adv_year_bucket', 'Reg_year_bucket', 'km'])
 
 # 
-filtered = grouped.filter(lambda x: len(x) >= 40).drop(labels=['Adv_ID',
+filtered = grouped.filter(lambda x: len(x) >= 50).drop(labels=['Adv_ID',
                                                                'Adv_month',
                                                                'Seat_num',
                                                                 'Door_num',
