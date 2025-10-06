@@ -1,3 +1,4 @@
+#%%
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -10,10 +11,11 @@ import numpy as np
 
 df = pd.read_csv("grouped_cars.csv")
 
+
 df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
-categorical_features = ['Maker', 'Genmodel', 'Fuel_type']
-numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Inflation_index']
+categorical_features = ['Maker', 'Genmodel_ID','Gearbox', 'Fuel_type', 'Bodytype']
+numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Entry_price', 'Inflation_index']
 
 X = df[categorical_features + numerical_features]
 y = df['Price']
