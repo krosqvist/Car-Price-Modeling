@@ -8,6 +8,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 import numpy as np
+import joblib
 
 df = pd.read_csv("grouped_cars.csv")
 
@@ -51,6 +52,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 model.fit(X_train, y_train)
 
+joblib.dump(model, 'car_price_model.pkl')
 
 y_pred = model.predict(X_test)
 
