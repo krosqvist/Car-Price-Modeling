@@ -29,5 +29,5 @@ app.post('/run', (req, res) => {
   })
 })
 
-const PORT = 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
