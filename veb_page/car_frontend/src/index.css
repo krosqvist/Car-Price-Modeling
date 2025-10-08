@@ -1,0 +1,63 @@
+/* Ensure full viewport height for centering */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
+}
+
+.app-container {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  padding: 20px 20px;      /* spacing around card */
+  box-sizing: border-box;
+}
+
+.form-card {
+  background: #fff;
+  padding: 20px 25px;         /* slightly smaller padding */
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  width: 400px;
+  max-width: 90%;
+  height: auto;
+  transition: box-shadow 0.2s ease;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;       /* reduce spacing */
+  font-weight: 500;
+  font-size: 14px;
+}
+
+input[type="text"], select {
+  margin-top: 2px;
+  padding: 6px 10px;         /* smaller inputs */
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.slider-group {
+  margin-bottom: 10px;       /* smaller spacing */
+}
+
+.slider-group label {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+input[type="range"] {
+  width: 100%;               /* full width but compact height */
+  margin: 0;
+  height: 5px;               /* thinner slider track */
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 10px;
+}
