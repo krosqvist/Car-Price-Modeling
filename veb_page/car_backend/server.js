@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const { spawn } = require('child_process')
+const path = require('path')
+require('dotenv').config()
 
 const app = express()
 app.use(cors())
@@ -19,12 +21,18 @@ app.post('/run', (req, res) => {
     req.body.km
   ]
 
-  const py = spawn('python3', ['script.py', ...args])
+  const py = spawn('python3', ['-u', path.resolve('script.py'), ...args])
+  py.stdout.on('data', d => console.log('Python stdout:', d.toString()))
+  py.stderr.on('data', d => console.error('Python stderr:', d.toString()))
+
 
   let dataString = ''
   py.stdout.on('data', (data) => (dataString += data.toString()))
 
-  py.on('close', () => {
+  py.on('close', (code) => {
+    if (code !== 0) {
+      return res.status(500).json({ error: 'Python script failed' })
+    }
     res.json({ result: dataString.trim() })
   })
 })
