@@ -21,21 +21,37 @@ app.post('/run', (req, res) => {
     req.body.km
   ]
 
-  const py = spawn('python3', ['-u', path.resolve('script.py'), ...args])
-  py.stdout.on('data', d => console.log('Python stdout:', d.toString()))
-  py.stderr.on('data', d => console.error('Python stderr:', d.toString()))
+  const scriptPath = path.resolve('script.py');
+  console.log('Script path:', scriptPath);
 
+  const py = spawn('python3', ['-u', scriptPath, ...args]);
 
-  let dataString = ''
-  py.stdout.on('data', (data) => (dataString += data.toString()))
+  let output = '';
+  let errors = '';
+
+  py.stdout.on('data', (data) => {
+    console.log('Python stdout:', data.toString());
+    output += data.toString();
+  });
+
+  py.stderr.on('data', (data) => {
+    console.error('Python stderr:', data.toString());
+    errors += data.toString();
+  });
+
+  py.on('error', (err) => {
+    console.error('Failed to start Python:', err);
+    res.status(500).json({ error: 'Failed to start Python', details: err.message });
+  });
 
   py.on('close', (code) => {
+    console.log('Python process exited with code', code);
     if (code !== 0) {
-      return res.status(500).json({ error: 'Python script failed' })
+      return res.status(500).json({ error: 'Python script failed', details: errors });
     }
-    res.json({ result: dataString.trim() })
-  })
-})
+    res.json({ result: output.trim() });
+  });
+});
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`))
