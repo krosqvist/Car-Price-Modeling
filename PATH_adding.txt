@@ -1,0 +1,8 @@
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+:::ESIMERKKI:::
+data_path = os.path.join(base_dir, 'data', 'Ad_table.csv')
+df = pd.read_csv(data_path)
