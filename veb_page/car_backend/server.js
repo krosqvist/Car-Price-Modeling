@@ -18,7 +18,7 @@ app.post('/run', (req, res) => {
     req.body.Bodytype,
     req.body.Engin_size,
     req.body.Reg_year,
-    req.body.km
+    req.body.Runned_Miles
   ]
 
   const scriptPath = path.resolve('script.py');
