@@ -5,19 +5,19 @@ import os
 from pymongo import MongoClient
 import requests
 import joblib
-#import tempfile # For local testing
+import tempfile # For local testing
 
 args = sys.argv
 
 load_dotenv()
 MONGODB_URI = os.getenv('MONGODB_URI')
-MODEL_PATH = '/tmp/car_price_model.pkl'
+#MODEL_PATH = '/tmp/car_price_model.pkl'
 # For local testing
-#MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
+MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
 if os.path.exists(MODEL_PATH):
     os.remove(MODEL_PATH)
 
-MODEL_URL = os.getenv('MODEL_URL')
+MODEL_URL = os.getenv('LINEAR_MODEL_URL')
 
 client = MongoClient(MONGODB_URI)
 db = client['CarData']
@@ -50,13 +50,12 @@ def load_model():
             raise ValueError('Downloaded file looks like HTML, check MODEL_URL')
     return joblib.load(MODEL_PATH)
 
-
 new_data = pd.DataFrame([{
-    'Maker': args[1],
-    'Genmodel': args[2],
-    'Gearbox': args[3],
-    'Fuel_type': args[4],
-    'Bodytype': args[5],
+    'Maker': args[1].title(),
+    'Genmodel': args[2].title(),
+    'Gearbox': args[3].title(),
+    'Fuel_type': args[4].title(),
+    'Bodytype': args[5].title(),
     'Engin_size': float(args[6]),
     'Reg_year': int(args[7]),
     'Runned_Miles': int(args[8]),
@@ -69,22 +68,31 @@ query = {
     'Reg_year': int(new_data.loc[0, 'Reg_year'])
 }
 
-car_doc = collection.find_one(query, {'Entry_price': 1, '_id': 0})
+car_doc = collection.find_one(
+    query,
+    {
+        'Entry_price': 1,
+        'Inflation_index': 1,
+        'Inflation_index_entry': 1,
+        '_id': 0
+    }
+)
 
 if car_doc and 'Entry_price' in car_doc:
     entry_price = car_doc['Entry_price']
     new_data['Entry_price'] = entry_price
+    new_data['Inflation_index'] = car_doc['Inflation_index']
+    new_data['Inflation_index_entry'] = car_doc['Inflation_index_entry']
+    message = ''
 else:
     new_data['Entry_price'] = 0 # Makeshift solution
-
-reg_year = int(new_data.loc[0, 'Reg_year'])
-infl_doc = collection.find_one({'Reg_year': reg_year}, {'Inflation_index': 1, '_id': 0})
-
-if infl_doc and 'Inflation_index' in infl_doc:
-    new_data['Inflation_index'] = infl_doc['Inflation_index']
-else:
-    new_data['Inflation_index'] = 1  # fallback if no data available
+    new_data['Inflation_index'] = 1
+    new_data['Inflation_index_entry'] = 1
+    message = 'Can not predict price for a car with given details.'
 
 model = load_model()
 predicted_price = model.predict(new_data)
-print(f'\nPredicted price for given car details: {predicted_price[0]:.0f} £ or {predicted_price[0]*1.15:.0f} €.')
+if message:
+    print(message)
+else:
+    print(f'\nPredicted price for given car details: {predicted_price[0]:.0f} £ or {predicted_price[0]*1.15:.0f} €.')
