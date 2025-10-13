@@ -10,6 +10,8 @@ pd.set_option('display.max_colwidth', None)
 
 df = pd.read_csv(data_path, low_memory=False)
 
+df = df.apply(lambda col: col.map(lambda x: x.lower() if isinstance(x, str) else x))
+
 # Numeroiksi
 df['Reg_year'] = pd.to_numeric(df['Reg_year'], errors='coerce')
 df['Adv_year'] = pd.to_numeric(df['Adv_year'], errors='coerce')
@@ -74,13 +76,13 @@ df['km'] = (df['Runned_Miles']*1.60934 // 20000) * 20000
 ##################################################################################
 # Muutoksia dataan
 # Moottorikoko numeroksi
-df['Engin_size'] = df['Engin_size'].str.replace('L', '', regex=False).astype(float)
+df['Engin_size'] = df['Engin_size'].str.replace('l', '', case=False, regex=False).astype(float)
 
 # Ikä erikseen
 df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
 # Pois superautot, hajoitetut (tmv) ja paljon ajetut autot
-df = df[df['Price']<=50000]
+df = df[df['Price']<=80000]
 df = df[df['Price']>=500]
 df = df[df["Runned_Miles"]*1.60934<=300000]
 
@@ -118,9 +120,10 @@ filtered = grouped.filter(lambda x: len(x) >= 28).drop(labels=['Adv_ID',
                                                                 'Reg_year_bucket',
                                                                 ], axis=1)
 
+
 missing = filtered.isna().sum()
 print(f"Count of missing values\n{missing[missing > 0]}\nDataframe size: {filtered.shape}")
-
+print(f'sub 20000 priced {filtered[filtered['Price']<20000].count()}')
 
 # The new file is saved to the "data" folder.
 output_path = os.path.join(base_dir, 'data', 'grouped_cars.csv')
