@@ -9,7 +9,7 @@ from grapher import grapher
 from predictor import predict_car_price
 import io
 import base64
-#import tempfile # For local testing
+import tempfile # For local testing
 
 args = sys.argv
 
@@ -18,11 +18,11 @@ MONGODB_URI = os.getenv('MONGODB_URI')
 MODEL_PATH = '/tmp/car_price_model.pkl'
 
 # For local testing
-'''MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
-if os.path.exists(MODEL_PATH):
-    os.remove(MODEL_PATH)'''
+#MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
+#if os.path.exists(MODEL_PATH):
+#    os.remove(MODEL_PATH)
 
-MODEL_URL = os.getenv('LINEAR_MODEL_URL')
+MODEL_URL = os.getenv('RANDOM_FOREST_MODEL_URL')
 
 client = MongoClient(MONGODB_URI)
 db = client['CarData']
@@ -56,11 +56,11 @@ def load_model():
     return joblib.load(MODEL_PATH)
 
 new_data = pd.DataFrame([{
-    'Maker': args[1].title(),
-    'Genmodel': args[2].title(),
-    'Gearbox': args[3].title(),
-    'Fuel_type': args[4].title(),
-    'Bodytype': args[5].title(),
+    'Maker': args[1].lower(),
+    'Genmodel': args[2].lower(),
+    'Gearbox': args[3].lower(),
+    'Fuel_type': args[4].lower(),
+    'Bodytype': args[5].lower(),
     'Engin_size': float(args[6]),
     'Reg_year': int(args[7]),
     'Runned_Miles': int(args[8]),
