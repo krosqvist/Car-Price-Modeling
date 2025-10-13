@@ -10,7 +10,7 @@ function App() {
     Bodytype: '',
     Engin_size: 1.6,
     Reg_year: 2018,
-    km: 100000,
+    Runned_Miles: 100000,
   })
 
   const [result, setResult] = useState(null)
@@ -100,9 +100,9 @@ function App() {
           </div>
 
           <div className="slider-group">
-            <label>Kilometers: {form.km.toLocaleString()} km</label>
-            <input type="range" name="km" min="0" max="300000" step="1000"
-              value={form.km} onChange={handleChange} />
+            <label>Miles: {form.Runned_Miles.toLocaleString()}</label>
+            <input type="range" name="Runned_Miles" min="0" max="300000" step="1000"
+              value={form.Runned_Miles} onChange={handleChange} />
           </div>
 
           <button type="submit" disabled={loading}>

@@ -14,6 +14,9 @@ MONGODB_URI = os.getenv('MONGODB_URI')
 MODEL_PATH = '/tmp/car_price_model.pkl'
 # For local testing
 #MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
+if os.path.exists(MODEL_PATH):
+    os.remove(MODEL_PATH)
+
 MODEL_URL = os.getenv('MODEL_URL')
 
 client = MongoClient(MONGODB_URI)
@@ -56,7 +59,7 @@ new_data = pd.DataFrame([{
     'Bodytype': args[5],
     'Engin_size': float(args[6]),
     'Reg_year': int(args[7]),
-    'km': int(args[8]),
+    'Runned_Miles': int(args[8]),
     'Adv_year': 2025
 }])
 
@@ -73,6 +76,14 @@ if car_doc and 'Entry_price' in car_doc:
     new_data['Entry_price'] = entry_price
 else:
     new_data['Entry_price'] = 0 # Makeshift solution
+
+reg_year = int(new_data.loc[0, 'Reg_year'])
+infl_doc = collection.find_one({'Reg_year': reg_year}, {'Inflation_index': 1, '_id': 0})
+
+if infl_doc and 'Inflation_index' in infl_doc:
+    new_data['Inflation_index'] = infl_doc['Inflation_index']
+else:
+    new_data['Inflation_index'] = 1  # fallback if no data available
 
 model = load_model()
 predicted_price = model.predict(new_data)
