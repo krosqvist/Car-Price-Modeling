@@ -66,7 +66,6 @@ model.fit(X_train, y_train)
 joblib.dump(model, 'car_price_model_linear.pkl')
 
 
-
 y_val_pred = model.predict(X_val)
 val_rmse = np.sqrt(mean_squared_error(y_val, y_val_pred))
 print(f"Validation RMSE: {val_rmse:.2f}")

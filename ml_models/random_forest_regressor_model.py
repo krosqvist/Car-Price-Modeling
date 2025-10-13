@@ -23,7 +23,7 @@ df = pd.read_csv(data_path)
 
 
 categorical_features = ['Engin_size','Maker', 'Genmodel','Reg_year', 'Gearbox', 'Fuel_type', 'Bodytype']
-numerical_features = ['Vehicle_age', 'Runned_Miles', 'Entry_price', 'Inflation_index']
+numerical_features = ['Vehicle_age', 'Runned_Miles', 'Entry_price', 'Inflation_index', 'Inflation_index_entry']
 
 # 'Maker', 'Genmodel_ID','Gearbox', 'Fuel_type', 'Bodytype'
 # 'Engin_size', 'Vehicle_age', 'km', 'Entry_price', 'Inflation_index'
