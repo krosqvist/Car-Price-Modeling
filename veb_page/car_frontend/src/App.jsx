@@ -113,13 +113,24 @@ function App() {
         </form>
 
         {result && (
-        <div className="result-box">
-          <h3>Estimated Price:</h3>
-          <p>{result}</p>
-          {image && <img src={`data:image/png;base64,${image}`} alt="Prediction plot" />}
-        </div>
-      )}
+          <>
+            <div className="result-box">
+              <h3>Estimated Price Right Now:</h3>
+              <p>{result}</p>
+              <h3>Price in the Future:</h3>
+            </div>
 
+            {image && (
+              <div className="prediction-image-container">
+                <img
+                  src={`data:image/png;base64,${image}`}
+                  alt="Prediction plot"
+                  className="prediction-image"
+                />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )

@@ -6,6 +6,7 @@ from pymongo import MongoClient
 import requests
 import joblib
 from grapher import grapher
+from predictor import predict_car_price
 import io
 import base64
 #import tempfile # For local testing
@@ -95,12 +96,11 @@ else:
     message = 'Can not predict price for a car with given details.'
 
 model = load_model()
-predicted_price = model.predict(new_data)
+'''
 if message:
     print(message)
 else:
-    print(f'\nPredicted price for given car details: {predicted_price[0]:.0f} £ or {predicted_price[0]*1.15:.0f} €.')
-
+'''
 grapher(
     model=model,
     maker=new_data.loc[0, 'Maker'],

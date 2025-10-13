@@ -51,7 +51,7 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         if maker_prices:
             entry_price = float(pd.Series(maker_prices).median())
         else:
-            entry_price = 10000  # final fallback
+            entry_price = 20000  # final fallback
 
     # --- Inflation index (hardcoded fallback if needed) ---
     inflation_index = {

@@ -72,11 +72,11 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     plt.legend()
     plt.grid(True)
     plt.xlabel("Year")
-    plt.ylabel("Predicted Car Price")
+    plt.ylabel("Predicted Car Price £")
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
     img_base64 = base64.b64encode(buf.read()).decode('utf-8')
     buf.close()
 
-    print(f"__IMG__START__{img_base64}__IMG__END__")
+    print(f"{y[0]:.0f}£\n__IMG__START__{img_base64}__IMG__END__")

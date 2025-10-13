@@ -114,3 +114,21 @@ button:disabled {
   font-weight: bold;
   color: #2563eb;
 }
+
+.prediction-image-container {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: white; /* optional */
+}
+
+.prediction-image {
+  width: 50vw;                 /* 50% of the viewport width */
+  max-width: 800px;            /* Prevent it from being too large on big screens */
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  cursor: zoom-in;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
