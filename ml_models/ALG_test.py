@@ -53,7 +53,7 @@ X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_
 X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 
 from functions.hyperparameter_finder import rf_tree_depth_est
-rmse_n_estimators_max_depth= rf_tree_depth_est(preprocessor, train_data=X_train, train_targ=y_train, val_data=X_val, val_targ=y_val, maxtrees=400)
+rmse_n_estimators_max_depth= rf_tree_depth_est(preprocessor, train_data=X_train, train_targ=y_train, val_data=X_val, val_targ=y_val, maxtrees=250)
 best_t = rmse_n_estimators_max_depth[1]
 best_d = rmse_n_estimators_max_depth[2]
 model = Pipeline(steps=[

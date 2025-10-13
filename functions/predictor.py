@@ -29,37 +29,42 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         If adv_year isn't given, it defaults to 2025
     """
     if adv_year is None:
-        adv_year=2025
+        adv_year = 2025
 
     vehicle_age = adv_year - reg_year
 
-
     df = pd.read_csv(data_path)
-    
-    entry_price = None
+
     mask = (df['Genmodel_ID'] == genmodel) & (df['Reg_year'] == reg_year)
     if mask.any():
         entry_price = df.loc[mask, 'Entry_price'].median()
-    if entry_price is None or pd.isna(entry_price):
+        infl_index_entry = df.loc[mask, 'Inflation_index_entry'].median()
+    else:
         mask_maker = (df['Maker'] == maker)
         if mask_maker.any():
             entry_price = df.loc[mask_maker, 'Entry_price'].median()
-    if entry_price is None or pd.isna(entry_price):
-        entry_price = 10000
+            infl_index_entry = df.loc[mask_maker, 'Inflation_index_entry'].median()
+        else:
+            entry_price = 25000
+            infl_index_entry = df['Inflation_index_entry'].mean()
+
+    mask_adv = df['Adv_year'] == adv_year
+    infl_index_adv = df.loc[mask_adv, 'Inflation_index'].median() if mask_adv.any() else df['Inflation_index'].mean()
 
     row = pd.DataFrame([{
         'Maker': maker,
         'Genmodel': genmodel,
-        'Gearbox': gearbox if gearbox is not None else 'Automatic',
-        'Fuel_type': fuel_type if fuel_type is not None else 'Petrol',
-        'Bodytype': bodytype if bodytype is not None else 'SUV',
-        'Engin_size': engin_size if engin_size is not None else 1.6,
+        'Gearbox': gearbox or 'Automatic',
+        'Fuel_type': fuel_type or 'Petrol',
+        'Bodytype': bodytype or 'SUV',
+        'Engin_size': engin_size or 1.6,
         'Adv_year': adv_year,
         'Reg_year': reg_year,
         'Vehicle_age': vehicle_age,
-        'Runned_Miles': miles if miles is not None else 50000,
+        'Runned_Miles': miles or (vehicle_age * 7100),
         'Entry_price': entry_price,
-        'Inflation_index': 0
+        'Inflation_index': infl_index_adv,
+        'Inflation_index_entry': infl_index_entry
     }])
 
     return print(f'Estimated price: {float(model.predict(row)[0])}\nEntry price: {entry_price}')

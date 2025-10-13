@@ -48,7 +48,7 @@ preprocessor = ColumnTransformer(transformers=[
 model = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(
-        n_estimators=100,  
+        n_estimators=200,  
         max_depth=30,      
         random_state=42,
         n_jobs=-1

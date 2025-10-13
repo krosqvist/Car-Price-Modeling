@@ -22,7 +22,7 @@ import joblib
 df = pd.read_csv(data_path)
 
 categorical_features = ['Maker', 'Genmodel', 'Reg_year', 'Adv_year', 'Gearbox', 'Fuel_type', 'Bodytype']
-numerical_features = ['Engin_size', 'Runned_Miles', 'Entry_price', 'Inflation_index']
+numerical_features = ['Engin_size', 'Runned_Miles', 'Entry_price', 'Inflation_index', 'Inflation_index_entry']
 
 # Split the data 
 X = df[categorical_features + numerical_features]
