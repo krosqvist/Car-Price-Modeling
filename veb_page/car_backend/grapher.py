@@ -61,8 +61,8 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     x_smooth = np.linspace(2024, 2031, 300)
     y_pred = exponential_model(x_smooth, *popt)
 
-    y_upper = y_pred + 1750 * 1.02**(x_smooth - 2025)
-    y_lower = y_pred - 1750 * 1.02**(x_smooth - 2025)
+    y_upper = y_pred + 2200 * 1.02**(x_smooth - 2025)
+    y_lower = y_pred - 2200 * 1.02**(x_smooth - 2025)
 
     plt.figure(figsize=(8, 5))
     plt.plot(x_smooth, y_pred, label='Exponential fit', color='green')
