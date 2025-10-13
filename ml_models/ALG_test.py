@@ -45,6 +45,17 @@ preprocessor = ColumnTransformer(transformers=[
     ('cat', categorical_transformer, categorical_features)
 ])
 
+
+
+#############################################################################################
+
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_state=42)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+
+from functions.hyperparameter_finder import rf_tree_depth_est
+rmse_n_estimators_max_depth= rf_tree_depth_est(preprocessor, train_data=X_train, train_targ=y_train, val_data=X_val, val_targ=y_val, maxtrees=400)
+best_t = rmse_n_estimators_max_depth[1]
+best_d = rmse_n_estimators_max_depth[2]
 model = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(
@@ -55,20 +66,26 @@ model = Pipeline(steps=[
     ))
 ])
 
-
-#############################################################################################
-
-X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_state=42)
-X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+model2 = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', RandomForestRegressor(
+        n_estimators=best_t,  
+        max_depth=best_d,      
+        random_state=42,
+        n_jobs=-1
+    ))
+])
 
 # Fit model
 model.fit(X_train, y_train)
-
-# the model is saved to the previous folder
-joblib.dump(model, 'car_price_model.pkl')
+model2.fit(X_train, y_train)
 
 # Evaluate
 y_val_pred = model.predict(X_val)
+val_rmse = np.sqrt(mean_squared_error(y_val, y_val_pred))
+print(f"Validation RMSE: {val_rmse:.2f}")
+
+y_val_pred = model2.predict(X_val)
 val_rmse = np.sqrt(mean_squared_error(y_val, y_val_pred))
 print(f"Validation RMSE: {val_rmse:.2f}")
 
@@ -78,3 +95,8 @@ r2 = r2_score(y_test, y_test_pred)
 print(f"Test RMSE: {test_rmse:.2f}")
 print(f"Test R²: {r2:.3f}")
 
+y_test_pred = model2.predict(X_test)
+test_rmse = np.sqrt(mean_squared_error(y_test, y_test_pred))
+r2 = r2_score(y_test, y_test_pred)
+print(f"Test RMSE: {test_rmse:.2f}")
+print(f"Test R²: {r2:.3f}")

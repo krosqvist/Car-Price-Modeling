@@ -15,7 +15,7 @@ df = pd.read_csv("grouped_cars.csv")
 
 df['Vehicle_age'] = df['Adv_year'] - df['Reg_year']
 
-categorical_features = ['Maker', 'Genmodel_ID','Gearbox', 'Fuel_type', 'Bodytype']
+categorical_features = ['Adv_year','Reg_year','Maker', 'Genmodel','Gearbox', 'Fuel_type', 'Bodytype']
 numerical_features = ['Engin_size', 'Vehicle_age', 'km', 'Entry_price', 'Inflation_index']
 
 X = df[categorical_features + numerical_features]

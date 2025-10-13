@@ -63,12 +63,12 @@ df['Inflation_index'] = df['Adv_year'].map(inflation_index)
 #################################################################################
 # Pyöristyksiä ryhmittelyä varten
 def year_bucket(year):
-    return (year // 3) * 3  
+    return (year // 4) * 4  
 
 df['Adv_year_bucket'] = df['Adv_year'].apply(year_bucket)
 df['Reg_year_bucket'] = df['Reg_year'].apply(year_bucket)
 
-df['km'] = (df['Runned_Miles']*1.60934 // 10000) * 10000
+df['km'] = (df['Runned_Miles']*1.60934 // 20000) * 20000
 
 
 ##################################################################################
@@ -93,8 +93,11 @@ df = df.merge(price_data,
                   right_on=['Genmodel_ID', 'Year'],
                   how='left')
 
+df['Inflation_index_entry'] = df['Year'].map(inflation_index)
 
-# Imputing missing entry prices
+
+
+# Imputing missing values
 from functions.impute_entry_price import impute_entry_prices
 from functions.impute_category import impute_car_features
 df=impute_entry_prices(df)
@@ -103,7 +106,7 @@ df=impute_car_features(df)
 
 #################################################################################
 # Ryhmittely ominaisuuksien mukaan
-grouped = df.groupby(['Genmodel_ID', 'Adv_year_bucket', 'Reg_year_bucket', 'km'])
+grouped = df.groupby(['Genmodel', 'Adv_year_bucket', 'Reg_year_bucket', 'km'])
 
 # 
 filtered = grouped.filter(lambda x: len(x) >= 28).drop(labels=['Adv_ID',
@@ -113,11 +116,11 @@ filtered = grouped.filter(lambda x: len(x) >= 28).drop(labels=['Adv_ID',
                                                                 'km', 
                                                                 'Adv_year_bucket', 
                                                                 'Reg_year_bucket',
-                                                                'Year'
                                                                 ], axis=1)
 
 missing = filtered.isna().sum()
 print(f"Count of missing values\n{missing[missing > 0]}\nDataframe size: {filtered.shape}")
+
 
 # The new file is saved to the "data" folder.
 output_path = os.path.join(base_dir, 'data', 'grouped_cars.csv')

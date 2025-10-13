@@ -71,7 +71,7 @@ df = df[df['Price']<=50000]
 df = df[df["Runned_Miles"]*1.60934<=300000]
 
 def year_bucket(year):
-    return (year // 3) * 3  
+    return (year // 2) * 2 
 
 df['Adv_year_bucket'] = df['Adv_year'].apply(year_bucket)
 df['Reg_year_bucket'] = df['Reg_year'].apply(year_bucket)
@@ -100,11 +100,12 @@ df = df.merge(price_data,
 
 
 
+
 # Ryhmittely ominaisuuksien mukaan (vuosi on todella tiukka ehto)
 grouped = df.groupby(['Genmodel_ID', 'Adv_year_bucket', 'Reg_year_bucket', 'km'])
 
 # 
-filtered = grouped.filter(lambda x: len(x) >= 50).drop(labels=['Adv_ID',
+filtered = grouped.filter(lambda x: len(x) >= 30).drop(labels=['Adv_ID',
                                                                'Adv_month',
                                                                'Seat_num',
                                                                 'Door_num',
