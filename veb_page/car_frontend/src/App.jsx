@@ -14,6 +14,7 @@ function App() {
   })
 
   const [result, setResult] = useState(null)
+  const [image, setImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
@@ -32,6 +33,7 @@ function App() {
     console.log(form)
     const data = await response.json()
     setResult(data.result)
+    setImage(data.image)
     setLoading(false)
   };
 
@@ -111,11 +113,13 @@ function App() {
         </form>
 
         {result && (
-          <div className="result-box">
-            <h3>Estimated Price:</h3>
-            <p>{result}</p>
-          </div>
-        )}
+        <div className="result-box">
+          <h3>Estimated Price:</h3>
+          <p>{result}</p>
+          {image && <img src={`data:image/png;base64,${image}`} alt="Prediction plot" />}
+        </div>
+      )}
+
       </div>
     </div>
   )

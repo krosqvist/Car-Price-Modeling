@@ -44,12 +44,21 @@ app.post('/run', (req, res) => {
     res.status(500).json({ error: 'Failed to start Python', details: err.message });
   });
 
+
   py.on('close', (code) => {
-    console.log('Python process exited with code', code);
-    if (code !== 0) {
-      return res.status(500).json({ error: 'Python script failed', details: errors });
-    }
-    res.json({ result: output.trim() });
+      // Extract base64 image
+      const imgMatch = output.match(/__IMG__START__(.*)__IMG__END__/s);
+      let imgBase64 = null;
+      if (imgMatch) {
+          imgBase64 = imgMatch[1];
+          // Remove the image block from the regular output
+          output = output.replace(/__IMG__START__.*__IMG__END__/s, '').trim();
+      }
+
+      res.json({
+          result: output,      // will contain "Can not predict price..." or other prints
+          image: imgBase64     // will contain the base64 image or null
+      });
   });
 });
 

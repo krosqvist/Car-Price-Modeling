@@ -5,17 +5,21 @@ import os
 from pymongo import MongoClient
 import requests
 import joblib
-import tempfile # For local testing
+from grapher import grapher
+import io
+import base64
+#import tempfile # For local testing
 
 args = sys.argv
 
 load_dotenv()
 MONGODB_URI = os.getenv('MONGODB_URI')
-#MODEL_PATH = '/tmp/car_price_model.pkl'
+MODEL_PATH = '/tmp/car_price_model.pkl'
+
 # For local testing
-MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
+'''MODEL_PATH = os.path.join(tempfile.gettempdir(), "car_price_model.pkl")
 if os.path.exists(MODEL_PATH):
-    os.remove(MODEL_PATH)
+    os.remove(MODEL_PATH)'''
 
 MODEL_URL = os.getenv('LINEAR_MODEL_URL')
 
@@ -96,3 +100,15 @@ if message:
     print(message)
 else:
     print(f'\nPredicted price for given car details: {predicted_price[0]:.0f} £ or {predicted_price[0]*1.15:.0f} €.')
+
+grapher(
+    model=model,
+    maker=new_data.loc[0, 'Maker'],
+    genmodel=new_data.loc[0, 'Genmodel'],
+    reg_year=new_data.loc[0, 'Reg_year'],
+    engin_size=new_data.loc[0, 'Engin_size'],
+    gearbox=new_data.loc[0, 'Gearbox'],
+    fuel_type=new_data.loc[0, 'Fuel_type'],
+    bodytype=new_data.loc[0, 'Bodytype'],
+    miles=new_data.loc[0, 'Runned_Miles'],
+)
