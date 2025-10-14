@@ -66,9 +66,6 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         1998: 1.8967, 1997: 1.9385, 1996: 1.9937, 1995: 2.0475
     }
 
-    infl_adv = inflation_index.get(adv_year, 1)
-    infl_entry = inflation_index.get(reg_year, 1)
-
     # --- Build row for prediction ---
     row = pd.DataFrame([{
         'Maker': maker,
@@ -81,9 +78,7 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         'Reg_year': reg_year,
         'Vehicle_age': vehicle_age,
         'Runned_Miles': miles,
-        'Entry_price': entry_price,
-        'Inflation_index': infl_adv,
-        'Inflation_index_entry': infl_entry
+        'Entry_price': entry_price
     }])
 
-    return float(model.predict(row)[0]), entry_price
+    return float(model.predict(row)[0])/inflation_index[adv_year], entry_price

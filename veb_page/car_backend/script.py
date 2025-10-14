@@ -77,8 +77,6 @@ car_doc = collection.find_one(
     query,
     {
         'Entry_price': 1,
-        'Inflation_index': 1,
-        'Inflation_index_entry': 1,
         '_id': 0
     }
 )
@@ -86,21 +84,10 @@ car_doc = collection.find_one(
 if car_doc and 'Entry_price' in car_doc:
     entry_price = car_doc['Entry_price']
     new_data['Entry_price'] = entry_price
-    new_data['Inflation_index'] = car_doc['Inflation_index']
-    new_data['Inflation_index_entry'] = car_doc['Inflation_index_entry']
-    message = ''
 else:
     new_data['Entry_price'] = 0 # Makeshift solution
-    new_data['Inflation_index'] = 1
-    new_data['Inflation_index_entry'] = 1
-    message = 'Can not predict price for a car with given details.'
 
 model = load_model()
-'''
-if message:
-    print(message)
-else:
-'''
 grapher(
     model=model,
     maker=new_data.loc[0, 'Maker'],

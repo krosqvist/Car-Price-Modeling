@@ -56,9 +56,9 @@ function App() {
             Gearbox
             <select name="Gearbox" value={form.Gearbox} onChange={handleChange} required>
               <option value="">Select Gearbox</option>
-              <option>Automatic</option>
-              <option>Semi-Automatic</option>
-              <option>Manual</option>
+              <option value="automatic">Automatic</option>
+              <option value="semi-automatic">Semi-Automatic</option>
+              <option value="manual">Manual</option>
             </select>
           </label>
 
@@ -66,10 +66,10 @@ function App() {
             Fuel Type
             <select name="Fuel_type" value={form.Fuel_type} onChange={handleChange} required>
               <option value="">Select Fuel Type</option>
-              <option>Diesel</option>
-              <option>Petrol</option>
-              <option>Hybrid</option>
-              <option>Electric</option>
+              <option value="diesel">Diesel</option>
+              <option value="petrol">Petrol</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="electric">Electric</option>
             </select>
           </label>
 
@@ -77,15 +77,15 @@ function App() {
             Bodytype
             <select name="Bodytype" value={form.Bodytype} onChange={handleChange} required>
               <option value="">Select Bodytype</option>
-              <option>Coupe</option>
-              <option>Convertible</option>
-              <option>Saloon</option>
-              <option>MPV</option>
-              <option>Hatchback</option>
-              <option>Estate</option>
-              <option>Pickup</option>
-              <option>SUV</option>
-              <option>Van</option>
+              <option value="coupe">Coupe</option>
+              <option value="convertible">Convertible</option>
+              <option value="saloon">Saloon</option>
+              <option value="mpv">MPV</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="estate">Estate</option>
+              <option value="pickup">Pickup</option>
+              <option value="suv">SUV</option>
+              <option value="van">Van</option>
             </select>
           </label>
 
@@ -102,7 +102,7 @@ function App() {
           </div>
 
           <div className="slider-group">
-            <label>Miles: {form.Runned_Miles.toLocaleString()}</label>
+            <label>Miles: {form.Runned_Miles}</label>
             <input type="range" name="Runned_Miles" min="0" max="300000" step="1000"
               value={form.Runned_Miles} onChange={handleChange} />
           </div>
