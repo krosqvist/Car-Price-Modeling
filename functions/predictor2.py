@@ -1,5 +1,3 @@
-import pandas as pd
-
 def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
                       gearbox=None, fuel_type=None, bodytype=None,
                       miles=None, data_path='data/grouped_cars.csv', adv_year=None):
@@ -98,8 +96,6 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         'Vehicle_age': vehicle_age,
         'Runned_Miles': miles if miles is not None else vehicle_age*7000,
         'Entry_price': entry_price,
-        'Inflation_index': inflation_index[adv_year],
-        "Inflation_index_entry": inflation_index[reg_year]
     }])
 
-    return (float(model.predict(row)[0]), entry_price)
+    return (float(model.predict(row)[0])/inflation_index[adv_year], entry_price)
