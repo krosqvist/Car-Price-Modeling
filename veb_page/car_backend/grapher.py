@@ -65,10 +65,11 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     y_lower = y_pred - y_pred * 0.14845856288 * 1.05**(x_smooth-2025)
 
     plt.figure(figsize=(8, 5))
-    plt.plot(x_smooth, y_pred, label='Exponential fit', color='green')
+    plt.plot(x_smooth, y_pred, color='green')
     plt.fill_between(x_smooth, y_lower, y_upper, color='green', alpha=0.2, label='50% Confidence band')
     plt.ylim(0, max(y_pred) + 3000)
     plt.xlim(2024.75, 2030.25)
+    plt.title(f'Price development for {maker.title()} {genmodel.title()} ({reg_year})')
     plt.legend()
     plt.grid(True)
     plt.xlabel("Year")
