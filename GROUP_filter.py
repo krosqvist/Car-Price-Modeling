@@ -58,6 +58,10 @@ inflation_index = {
     1995: 2.0475
 }
 
+new_prices = []
+for _, row in df.iterrows():
+    new_prices.append(row["Price"]*inflation_index[row["Adv_year"]])
+df["Price"]=new_prices
 
 df['Inflation_index'] = df['Adv_year'].map(inflation_index)
 
@@ -123,8 +127,9 @@ filtered = grouped.filter(lambda x: len(x) >= 28).drop(labels=['Adv_ID',
 
 missing = filtered.isna().sum()
 print(f"Count of missing values\n{missing[missing > 0]}\nDataframe size: {filtered.shape}")
-print(f'sub 20000 priced {filtered[filtered['Price']<20000].count()}')
+#print(f'sub 20000 priced {filtered[filtered['Price']<20000].count()}')
 
 # The new file is saved to the "data" folder.
 output_path = os.path.join(base_dir, 'data', 'grouped_cars.csv')
 filtered.to_csv(output_path, index=False)
+
