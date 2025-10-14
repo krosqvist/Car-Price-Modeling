@@ -37,8 +37,8 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     y_pred = exponential_model(x_smooth, *popt)
 
     # Confidence interval (approximate): ±1750
-    y_upper = y_pred + 1750 * 1.05**(x_smooth-2025)
-    y_lower = y_pred - 1750 * 1.05**(x_smooth-2025)
+    y_upper = y_pred + y_pred * 0.14845856288 * 1.05**(x_smooth-2025)
+    y_lower = y_pred - y_pred * 0.14845856288 * 1.05**(x_smooth-2025)
 
     # Plotting
     plt.figure(figsize=(8, 5))
@@ -52,4 +52,5 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     plt.xlabel("Year")
     plt.ylabel("Predicted Car Price")
     plt.show()
+
     
