@@ -1,0 +1,331 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+/* SULAVUUS */
+.fade-in {
+  opacity: 0;
+  animation: fadeInAnimation 2s ease-in-out forwards;
+}
+
+@keyframes fadeInAnimation {
+  to {
+    opacity: 1;
+  }
+}
+
+
+/*YLÄPALKKI*/
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: rgb(250, 173, 38); 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar {
+  transition: box-shadow 0.2s ease;
+}
+
+.logo {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.top-links {
+  display: flex;
+  align-items: center;
+}
+
+.top-button {
+  background-color: rgb(255, 183, 47);
+  color:white;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 1rem;
+}
+
+.top-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 700px) {
+  .top-button {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+
+
+
+/*LEIPÄTEKSTI*/
+.content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.content section {
+  margin-bottom: 2rem;
+}
+
+
+
+
+
+/* LAATIKKO 1 */
+.split-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  max-width: 2000px;
+  height: 350px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  margin: 2rem clamp(0.5rem, 3.5vw, 4rem) 2rem clamp(0.5rem, 3.5vw, 4rem);
+  
+}
+
+
+.split-left, .split-right {
+  flex: 1 1 50%;
+}
+
+.split-left {
+  background-color: rgb(250, 173, 38);
+  padding: 2rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+/*  */
+.split-right {
+  overflow: hidden;
+  position: relative;
+}
+
+.split-right img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: left;
+  display: block;
+}
+
+/* PUHELIN */
+@media (max-width: 700px) {
+  .split-block {
+    flex-direction: column;
+    height: auto; 
+  }
+
+  .split-left,
+  .split-right {
+    flex: none;
+    width: 100%;
+    height: auto;
+  }
+
+  .split-right img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+
+
+/*PAINIKKEET LAATIKKOON 1*/
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  background-color: rgb(255, 183, 47);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-links a:hover {
+  transform:  scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
+
+@media (max-width: 700px) {
+
+  .split-left {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .nav-button {
+    flex: none;
+    text-align: center;
+    width: auto;
+    min-width: 20%;
+    max-width: 20%;
+  }
+}
+
+
+
+
+/* LAATIKON SISÄINEN ASETTELU */
+
+.split-left .description {
+  text-align: left;
+}
+
+
+.split-left .description h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  margin: 0;
+  line-height: 1.2;
+}
+
+
+.split-left .invitation h3 {
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  margin: 0;
+}
+
+
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+
+
+.nav-button {
+  background-color: white;
+  color: rgb(250, 173, 38);
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
+/* SIVUN ALAOSA */
+.bottom-gradient {
+  width: 100%;
+  height: 10vh; 
+  background: linear-gradient(to bottom, transparent, RGB(250, 173, 38)); 
+}
+.orange-footer {
+  width: 100%;
+  height: 15vh; 
+  background-color: RGB(250, 173, 38); 
+}
+
+/* YHTEYDENOTTOLOMAKE */
+
+
+/* VIRHEVIESTI */
+.blocked-message {
+  margin: 5vh 5vw; /* 5% of viewport height from top, 5% of width from sides */
+  font-size: 1.2rem;
+  line-height: 1.6;
+  padding: 1em;
+  background-color: #fbeaea;
+  border: 1px solid #d99;
+  border-radius: 8px;
+  color: #600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* LEIPÄTEKSTIN TYYLI */
+#yhteydenottolomake-welcome {
+  margin: 4vh 5vw;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  color: #222;
+}
+
+#yhteydenottolomake-welcome h2 {
+  font-size: 1.8rem 1.5;
+  margin-bottom: 0.5rem 1.5;
+}
+
+
+/* LATAUSANIMAATIO */
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid orange;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 3rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
