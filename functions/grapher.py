@@ -36,7 +36,7 @@ def grapher(model, maker, genmodel, reg_year, engin_size=None,
     x_smooth = np.linspace(2024, 2031, 300)
     y_pred = exponential_model(x_smooth, *popt)
 
-    # Confidence interval (approximate): ±1750
+    # Confidence interval (approximate): ±
     y_upper = y_pred + y_pred * 0.14845856288 * 1.05**(x_smooth-2025)
     y_lower = y_pred - y_pred * 0.14845856288 * 1.05**(x_smooth-2025)
 

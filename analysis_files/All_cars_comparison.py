@@ -1,9 +1,9 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 base_dir = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(base_dir, 'data', 'Ad_table.csv')
-data_path2 = os.path.join(base_dir, 'data', 'Price_table.csv')
-
+parent_dir = os.path.dirname(base_dir)
+data_path = os.path.join(parent_dir, 'data', 'Ad_table.csv')
+data_path2 = os.path.join(parent_dir, 'data', 'Price_table.csv')
 
 import pandas as pd
 import numpy as np
@@ -34,5 +34,5 @@ for _, row in cars.iterrows():
 plt.plot(age, price_percent, 'o', alpha=0.01)
 plt.xlim(0, 20)
 plt.ylim(0, 1.2)
-plt.savefig('comparison_plot.png', dpi=300, bbox_inches='tight')
+plt.savefig('analysis_files/comparison_plot.png', dpi=300, bbox_inches='tight')
     

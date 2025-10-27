@@ -1,8 +1,10 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 base_dir = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.join(base_dir, 'data', 'Ad_table.csv')
-data_path2 = os.path.join(base_dir, 'data', 'Price_table.csv')
+parent_dir = os.path.dirname(base_dir)
+data_path = os.path.join(parent_dir, 'data', 'Ad_table.csv')
+data_path2 = os.path.join(parent_dir, 'data', 'Price_table.csv')
+
 
 
 import pandas as pd
@@ -62,3 +64,4 @@ plt.grid(True)
 plt.gca().xaxis.set_major_locator(MaxNLocator(nbins=6))  # about 6 ticks
 plt.gca().yaxis.set_major_locator(MaxNLocator(nbins=6))
 plt.show()
+plt.savefig("analysis_files/analysis_plot.png")

@@ -1,3 +1,5 @@
+import pandas as pd
+
 def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
                       gearbox=None, fuel_type=None, bodytype=None,
                       miles=None, data_path='data/grouped_cars.csv', adv_year=None):
@@ -11,7 +13,7 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
     engine_size : int
     gearbox : str
     fuel_type : str
-        Fuel types: 'Diesel' 'Petrol' nan 'Petrol Ethanol' 'Electric'
+        Fuel types: 'Diesel' 'Petrol' 'Petrol Ethanol'
         'Hybrid  Petrol/Electric' 'Bi Fuel' 'Hybrid  Petrol/Electric Plug-in'
         'Petrol Hybrid' 'Petrol Plug-in Hybrid' 'Hybrid  Diesel/Electric'
         'Hybrid  Diesel/Electric Plug-in' 'Diesel Hybrid'
@@ -26,6 +28,7 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
     adv_year : int
         If adv_year isn't given, it defaults to 2025
     """
+    # set the used advertisement year if missing
     if adv_year is None:
         adv_year=2025
 
@@ -34,6 +37,7 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
 
     df = pd.read_csv(data_path)
     
+    # find an appropriate entry price for the vehicle
     entry_price = None
     mask = (df['Genmodel_ID'] == genmodel) & (df['Reg_year'] == reg_year)
     if mask.any():
@@ -43,8 +47,9 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         if mask_maker.any():
             entry_price = df.loc[mask_maker, 'Entry_price'].median()
     if entry_price is None or pd.isna(entry_price):
-        entry_price = 10000
+        entry_price = 25000
 
+    # https://www.macrotrends.net/global-metrics/countries/gbr/united-kingdom/inflation-rate-cpi
     inflation_index = {
         2030: 0.8943,
         2029: 0.9122,
@@ -98,4 +103,5 @@ def predict_car_price(model, maker, genmodel, reg_year, engin_size=None,
         'Entry_price': entry_price,
     }])
 
+    # Adjustment for inflation
     return (float(model.predict(row)[0])/inflation_index[adv_year], entry_price)
