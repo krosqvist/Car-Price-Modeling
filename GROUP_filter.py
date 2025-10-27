@@ -80,6 +80,55 @@ df=robust_numerical_imputer(df, numericals_to_impute)
 
 ##############################################################################################################
 
+inflation_index = {
+        2030: 0.8943,
+        2029: 0.9122,
+        2028: 0.9305,
+        2027: 0.9491,
+        2026: 0.9690,
+        2025: 1.0000,
+        2024: 1.0327,
+        2023: 1.1028,
+        2022: 1.1902,
+        2021: 1.2202,
+        2020: 1.2322,
+        2019: 1.2537,
+        2018: 1.2824,
+        2017: 1.3152,
+        2016: 1.3285,
+        2015: 1.3334,
+        2014: 1.3527,
+        2013: 1.3837,
+        2012: 1.4193,
+        2011: 1.4741,
+        2010: 1.5108,
+        2009: 1.5404,
+        2008: 1.5946,
+        2007: 1.6327,
+        2006: 1.6729,
+        2005: 1.7078,
+        2004: 1.7316,
+        2003: 1.7555,
+        2002: 1.7822,
+        2001: 1.8094,
+        2000: 1.8308,
+        1999: 1.8628,
+        1998: 1.8967,
+        1997: 1.9385,
+        1996: 1.9937,
+        1995: 2.0475
+    }
+
+def adjust_for_inflation(row):
+    year = int(row['Reg_year'])
+    if year in inflation_index:
+        return row['Price'] * inflation_index[year]
+    else:
+        return row['Price']
+
+df['Price'] = df.apply(adjust_for_inflation, axis=1)
+
+
 
 # missing = filtered.isna().sum()
 # print(f"Count of missing values\n{missing[missing > 0]}\nDataframe size: {filtered.shape}")
